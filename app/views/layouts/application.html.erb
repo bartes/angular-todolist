@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Angular Rails seed</title>
-    <%= stylesheet_link_tag    "application" %>
-    <%= javascript_include_tag "application" %>
+    <%= stylesheet_link_tag "application" %>
 
     <%= csrf_meta_tags %>
   </head>
@@ -17,9 +16,6 @@
     <ng:view></ng:view>
 
     <script src="/assets/angular/angular.js" ng:autobind></script>
-    <script src="/assets/app/services.js"></script>
-    <script src="/assets/app/controllers.js"></script>
-    <script src="/assets/app/filters.js"></script>
-    <script src="/assets/app/widgets.js"></script>
+    <%= javascript_include_tag "application" %>
   </body>
 </html>
