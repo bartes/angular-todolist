@@ -38,5 +38,6 @@ module Angular
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.paths << "#{Rails.root}/vendor/assets" << "#{Rails.root}/lib/assets"
   end
 end
