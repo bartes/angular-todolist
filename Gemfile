@@ -18,4 +18,6 @@ end
 group :test do
   gem 'rspec'
   gem 'rspec-rails'
+
+  gem 'js-test-driver-rails', '>= 0.5.0.pre2'
 end
