@@ -58,8 +58,13 @@ describe('TodosController', function() {
 
 
   describe('updateTodo()', function() {
-    it('should upate a todo');
-    it('should execute given callback');
+    it('should upate a todo', function() {
+      throw;
+    });
+
+    it('should execute given callback', function() {
+      throw;
+    });
   });
 
   describe('deleteTodo()', function() {
