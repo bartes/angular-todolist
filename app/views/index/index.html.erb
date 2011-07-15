@@ -4,7 +4,7 @@
   <select id="todo-estimate" name="todoEstimate">
     <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
   </select>
-  <button ng:click="addTodo()">Add</button>
+  <button ng:click="addTodo(todoName, todoEstimate)">Add</button>
 
   <div class="tasks" ng:show="todos.$filter({done: false}).length > 0">
     <b>Tasks to do:</b>

@@ -6,6 +6,7 @@
 //
 //= require_self
 //= require 'app/services'
-//= require 'app/controllers'
+//= require 'app/controllers/todo_editor_controller.js'
+//= require 'app/controllers/todos_controller.js'
 //= require 'app/filters'
 //= require 'app/widgets'
