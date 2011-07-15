@@ -56,6 +56,12 @@ describe('TodosController', function() {
     });
   });
 
+
+  describe('updateTodo()', function() {
+    it('should upate a todo');
+    it('should execute given callback');
+  });
+
   describe('deleteTodo()', function() {
     var todo = {id: 666};
 

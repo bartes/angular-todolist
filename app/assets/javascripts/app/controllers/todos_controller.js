@@ -36,6 +36,7 @@ TodosController.prototype = {
 
     this.$xhr('PUT', '/todos/' + todo.id + '.json', {todo: data}, function(code, response) {
       if (code == 200) {
+        // update todo's fields
         _(response).each(function(value, field) {
           todo[field] = value;
         });
