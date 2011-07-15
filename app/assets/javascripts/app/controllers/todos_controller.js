@@ -1,20 +1,8 @@
-function TodosController() {
+function TodosController(Todos_) {
   this.estimates = [0, 1, 2, 3, 5, 8];
-
-  this.todos = [{
-    name: "Learn angular",
-    estimate: 8,
-    done: true
-  }, {
-    name: "Install java",
-    estimate: 2,
-    done: false
-  }, {
-    name: 'Uninstall ruby',
-    estimate: 3,
-    done: false
-  }];
+  this.todos = Todos_.query();
 }
+TodosController.$inject = ['Todos'];
 
 TodosController.prototype = {
   addTodo: function(name, estimate) {

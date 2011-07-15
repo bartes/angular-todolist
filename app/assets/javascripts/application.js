@@ -5,6 +5,7 @@
 // the compiled file.
 //
 //= require_self
+//= require jquery-1.6.2
 //= require 'app/services'
 //= require 'app/controllers/todo_editor_controller.js'
 //= require 'app/controllers/todos_controller.js'

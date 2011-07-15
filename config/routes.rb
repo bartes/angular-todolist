@@ -1,4 +1,6 @@
 Angular::Application.routes.draw do
+  resources :todos
+
   root :to => 'index#index'
 
   # The priority is based upon order of creation:
