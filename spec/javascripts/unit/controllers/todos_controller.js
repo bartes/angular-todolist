@@ -28,21 +28,30 @@ describe('TodosController', function() {
   });
 
   describe('addTodo()', function() {
+    var response = {};
+
     beforeEach(function() {
-      var expectedData = { todo: {
+      response = { todo: {
         name: 'Something evil',
         estimate: 666,
         done: false
       }};
-      $browser.xhr.expectPOST('/todos.json', expectedData).respond(201, expectedData.todo);
+
+      var data = response;
+      $browser.xhr.expectPOST('/todos.json', data).respond(201, response.todo);
+
+      // will set the controller.todos variable via $xhr
+      $browser.xhr.flush();
     });
 
     it('should add a new todo item via $xhr', function() {
+      spyOn(controller.todos, 'push');
       spyOn(controller, 'resetForm');
 
       controller.addTodo('Something evil', 666);
       $browser.xhr.flush();
 
+      expect(controller.todos.push).toHaveBeenCalledWith(response.todo);
       expect(controller.resetForm).toHaveBeenCalled();
     });
   });
