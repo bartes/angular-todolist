@@ -1,2 +1,62 @@
-<h1>Index#index</h1>
-<p>Find me in app/views/index/index.html.erb</p>
+<div ng:controller="TodosController">
+  <input type="text" name="todoName" size="30" placeholder="Enter your todo here" ng:required />
+  <label for="todo-estimate">estimation:</label>
+  <select id="todo-estimate" name="todoEstimate">
+    <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
+  </select>
+  <button ng:click="addTodo()">Add</button>
+
+  <div class="tasks" ng:show="todos.$filter({done: false}).length > 0">
+    <b>Tasks to do:</b>
+    <ul ng:repeat="todo in todos.$filter({done: false})">
+      <li>
+        <div ng:controller="TodoEditorController">
+          <button ng:click="todos.$remove(todo)">Delete</button>
+          <button ng:click="todo.done = true">Done</button>
+
+          <span ng:hide="editorEnabled" ng:click="enableEditor()">
+            <b>{{todo.name}}</b> ({{todo.estimate}})
+          </span>
+
+          <span ng:show="editorEnabled">
+            <input type="text" size="30" name="todoName" ng:required />
+            <select name="todoEstimate">
+              <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
+            </select>
+
+            <button ng:click="save()">Ok</button>
+            <button ng:click="disableEditor()">Cancel</button>
+          </span>
+        </div>
+
+      </li>
+    </ul>
+    Total estimation: {{todos.$filter({done: false}).$sum('estimate')}}
+  </div>
+
+  <div class="tasks" ng:show="todos.$filter({done: true}).length > 0">
+    <b>Done tasks:</b>
+    <ul ng:repeat="todo in todos.$filter({done: true})">
+      <li>
+        <button ng:click="todos.$remove(todo)">Delete</button>
+        <button ng:click="todo.done = false">Not done</button>
+
+        <span class="todo done"><b>{{todo.name}}</b> ({{todo.estimate}})</span>
+      </li>
+    </ul>
+    Total estimation: {{todos.$filter({done: true}).$sum('estimate')}}
+  </div>
+
+  <div class="stats">
+    <div>All: {{todos.length}}</div>
+    <div>Incomplete: {{todos.$filter({done: false}).length}}</div>
+    <div>Done: {{todos.$filter({done: true}).length}}</div>
+  </div>
+
+  <hr />
+  Debug view:
+  <pre>
+      todos = {{todos}}
+  </pre>
+</div>
+

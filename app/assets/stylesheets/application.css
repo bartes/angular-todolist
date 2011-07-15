@@ -5,3 +5,7 @@
  *= require_self
  *= require_tree . 
 */
+
+.todo.done {text-decoration: line-through; color: gray;}
+.tasks { margin: 10px; }
+.stats { margin: 10px; }

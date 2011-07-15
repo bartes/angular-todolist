@@ -8,12 +8,7 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <ul class="menu">
-      <li><a href="#/view1">view1</a></li>
-      <li><a href="#/view2">view2</a></li>
-    </ul>
-
-    <ng:view></ng:view>
+    <%= yield %>
 
     <script src="/assets/angular/angular.js" ng:autobind></script>
     <%= javascript_include_tag "application" %>
