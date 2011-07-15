@@ -3,6 +3,7 @@ function TodosController($xhr) {
   var scope = this;
 
   this.estimates = [0, 1, 2, 3, 5, 8];
+  this.todos = [];
 
   this.$xhr('GET', '/todos.json', function(code, response) {
     scope.todos = response;
@@ -16,13 +17,13 @@ TodosController.prototype = {
   addTodo: function(name, estimate) {
     var scope = this;
 
-    var data = { todo: {
+    var data = {
       name: name,
       estimate: estimate,
       done: false
-    }};
+    };
 
-    this.$xhr('POST', '/todos.json', data, function(code, response) {
+    this.$xhr('POST', '/todos.json', {todo: data}, function(code, response) {
       if (code == 201) {
         scope.todos.push(response);
         scope.resetForm();
