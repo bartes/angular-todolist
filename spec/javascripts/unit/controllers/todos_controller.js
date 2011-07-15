@@ -56,4 +56,22 @@ describe('TodosController', function() {
     });
   });
 
+  describe('deleteTodo()', function() {
+    var todo = {id: 666};
+
+    beforeEach(function() {
+      $browser.xhr.expectDELETE('/todos/' + todo.id + '.json').respond(200);
+      $browser.xhr.flush();
+    });
+
+    it('should delete a todo via $xhr', function() {
+      spyOn(angular.Array, 'remove');
+
+      controller.deleteTodo(todo);
+      $browser.xhr.flush();
+
+      expect(angular.Array.remove).toHaveBeenCalledWith(controller.todos, todo);
+    });
+  });
+
 });
