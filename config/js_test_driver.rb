@@ -7,6 +7,7 @@ enable_jasmine
 # files to be included
 # you can use Ruby globbing syntax (spec/js/**/*_spec.js), which will be automatically expanded
 includes 'vendor/assets/javascripts/angular/angular.js'
+includes 'vendor/assets/javascripts/tests/angular/angular-mocks.js'
 includes 'vendor/assets/javascripts/underscore.js'
 
 includes 'app/assets/javascripts/**/*.js'

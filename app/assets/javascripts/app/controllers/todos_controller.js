@@ -10,18 +10,17 @@ function TodosController($xhr) {
 
   this.resetForm();
 }
+TodosController.$inject = ['$xhr'];
 
 TodosController.prototype = {
   addTodo: function(name, estimate) {
     var scope = this;
 
-    var data = {
-      todo: {
-        name: name,
-        estimate: estimate,
-        done: false
-      }
-    };
+    var data = { todo: {
+      name: name,
+      estimate: estimate,
+      done: false
+    }};
 
     this.$xhr('POST', '/todos.json', data, function(code, response) {
       if (code == 201) {
