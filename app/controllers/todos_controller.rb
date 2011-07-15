@@ -41,7 +41,7 @@ class TodosController < ApplicationController
   def update
     @todo = Todo.find(params[:id])
     @todo.update_attributes(params[:todo])
-    respond_with @todo
+    render :json => @todo
   end
 
   # DELETE /todos/1

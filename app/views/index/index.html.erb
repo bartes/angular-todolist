@@ -11,8 +11,8 @@
     <ul ng:repeat="todo in todos.$filter({done: false})">
       <li>
         <div ng:controller="TodoEditorController">
-          <button ng:click="todos.$remove(todo)">Delete</button>
-          <button ng:click="todo.done = true">Done</button>
+          <button ng:click="deleteTodo(todo)">Delete</button>
+          <button ng:click="updateTodo(todo, {done: true})">Done</button>
 
           <span ng:hide="editorEnabled" ng:click="enableEditor()">
             <b>{{todo.name}}</b> ({{todo.estimate}})
@@ -38,8 +38,8 @@
     <b>Done tasks:</b>
     <ul ng:repeat="todo in todos.$filter({done: true})">
       <li>
-        <button ng:click="todos.$remove(todo)">Delete</button>
-        <button ng:click="todo.done = false">Not done</button>
+        <button ng:click="deleteTodo(todo)">Delete</button>
+        <button ng:click="updateTodo(todo, {done: false})">Not done</button>
 
         <span class="todo done"><b>{{todo.name}}</b> ({{todo.estimate}})</span>
       </li>

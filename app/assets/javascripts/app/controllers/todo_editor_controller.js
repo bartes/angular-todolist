@@ -15,12 +15,12 @@ TodoEditorController.prototype = {
   },
 
   save: function() {
-    if (this.todoName === "") { return false; }
+    var scope = this;
+    var data = {name: this.todoName, estimate: this.todoEstimate};
 
-    this.todo.name = this.todoName;
-    this.todo.estimate = this.todoEstimate;
-
-    this.disableEditor();
+    this.updateTodo(this.todo, data, function() {
+      scope.disableEditor();
+    });
   }
 };
 
