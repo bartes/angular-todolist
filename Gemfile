@@ -10,9 +10,12 @@ gem 'coffee-script'
 gem 'uglifier'
 
 gem 'jquery-rails'
+gem 'kaminari'
 
 group :developments, :test do
   gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'ffaker'
+  gem 'progressbar'
 end
 
 group :test do

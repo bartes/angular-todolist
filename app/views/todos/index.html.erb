@@ -1,25 +1,42 @@
 <h1>Listing todos</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Estimate</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div ng:controller="TodosListController">
+  <div class="pagination">
+    <a ng:click="prevPage()">Prev page</a>
+    page {{currentPage}} of {{numPages}}
+    <a ng:click="nextPage()">Next page</a>
 
-<% @todos.each do |todo| %>
-  <tr>
-    <td><%= todo.name %></td>
-    <td><%= todo.estimate %></td>
-    <td><%= link_to 'Show', todo %></td>
-    <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
-    <td><%= link_to 'Destroy', todo, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
+    per page:
+    <select name="perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
+    </select>
+  </div>
 
-<br />
+  <table>
+    <thead>
+      <tr>
+        <th my:sortable-column="name">Name</th>
+        <th my:sortable-column="estimate">Estimate</th>
+        <th my:sortable-column="done">Done</th>
+        <th my:sortable-column="created_at">Created at</th>
+      </tr>
+    </thead>
 
-<%= link_to 'New Todo', new_todo_path %>
+    <tbody>
+      <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
+        <td>{{todo.name}}</td>
+        <td>{{todo.estimate}}</td>
+        <td>{{todo.done}}</td>
+        <td>{{todo.created_at}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pre>
+    orderBy = {{orderBy}}
+    orderDirection = {{orderDirection}}
+    perPage = {{perPage}}
+    currentPage = {{currentPage}}
+    numPages = {{numPages}}
+  </pre>
+</div>
+

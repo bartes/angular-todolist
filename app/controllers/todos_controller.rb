@@ -8,6 +8,14 @@ class TodosController < ApplicationController
     respond_with @todos
   end
 
+  def paginate
+    @todos = Todo.order("#{params[:order_by] || 'created_at'} #{params[:order_direction] || 'ASC'}")
+      .page(params[:page] || 1)
+      .per(params[:per_page] || 10)
+
+    render :json => { :records => @todos, :totalCount => @todos.total_count, :numPages => @todos.num_pages, :currentPage => @todos.current_page }
+  end
+
   # GET /todos/1
   # GET /todos/1.json
   def show

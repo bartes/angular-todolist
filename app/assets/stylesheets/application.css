@@ -9,3 +9,21 @@
 .todo.done {text-decoration: line-through; color: gray;}
 .tasks { margin: 10px; }
 .stats { margin: 10px; }
+
+th {
+  width: 300px
+}
+
+th.sortable-column.sort-asc {
+  background-image: url(/assets/sort-up.gif);
+  background-repeat: no-repeat;
+}
+
+th.sortable-column.sort-desc {
+  background-image: url(/assets/sort-down.gif);
+  background-repeat: no-repeat;
+}
+
+tr.even {
+  background-color: lightBlue;
+}
