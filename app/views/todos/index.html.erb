@@ -1,4 +1,4 @@
-<h1>Listing todos</h1>
+<h1><%= link_to "Listing todos", todos_path %></h1>
 
 <div ng:controller="TodosListController">
   <div class="pagination">
@@ -7,11 +7,11 @@
     <a ng:click="nextPage()">Next page</a>
 
     per page:
-    <select name="perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
+    <select name="todos.perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
     </select>
   </div>
 
-  <table>
+  <table class="grid">
     <thead>
       <tr>
         <th my:sortable-column="name">Name</th>
@@ -22,7 +22,7 @@
     </thead>
 
     <tbody>
-      <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
+      <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
         <td>{{todo.name}}</td>
         <td>{{todo.estimate}}</td>
         <td>{{todo.done}}</td>
@@ -32,11 +32,11 @@
   </table>
 
   <pre>
-    orderBy = {{orderBy}}
-    orderDirection = {{orderDirection}}
-    perPage = {{perPage}}
-    currentPage = {{currentPage}}
-    numPages = {{numPages}}
+    orderBy = {{todos.orderBy}}
+    orderDirection = {{todos.orderDirection}}
+    perPage = {{todos.perPage}}
+    currentPage = {{todos.currentPage}}
+    numPages = {{todos.numPages}}
   </pre>
 </div>
 
