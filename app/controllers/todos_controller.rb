@@ -9,20 +9,22 @@ class TodosController < ApplicationController
   end
 
   def paginate
-    order_by = params[:order_by] || 'created_at'
-    order_direction = params[:order_direction] || 'asc'
+    order_by = params[:orderBy] || 'created_at'
+    order_direction = params[:orderDirection] || 'asc'
 
     @todos = Todo.order("#{order_by} #{order_direction}")
-      .page(params[:page] || 1)
-      .per(params[:per_page] || 10)
+      .page(params[:currentPage] || 1)
+      .per(params[:perPage] || 10)
 
     result = {
       :records => @todos,
-      :orderBy => order_by, :orderDirection => order_direction,
-      :totalCount => @todos.total_count,
-      :numPages => @todos.num_pages,
-      :perPage => @todos.limit_value,
-      :currentPage => @todos.current_page
+      :paginationParams => {
+        :orderBy => order_by, :orderDirection => order_direction,
+        :totalCount => @todos.total_count,
+        :numPages => @todos.num_pages,
+        :perPage => @todos.limit_value,
+        :currentPage => @todos.current_page
+      }
     }
     render :json => result
   end

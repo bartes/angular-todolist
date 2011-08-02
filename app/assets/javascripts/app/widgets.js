@@ -5,8 +5,8 @@ angular.directive('my:sortable-column', function(columnName, compiledElement) {
 
     linkElement.addClass('sortable-column');
 
-    if (columnName == scope.todos.orderBy) {
-      linkElement.addClass('sort-' + scope.todos.orderDirection);
+    if (columnName == scope.paginationParams.orderBy) {
+      linkElement.addClass('sort-' + scope.paginationParams.orderDirection);
     }
 
     linkElement.click(function() {
@@ -15,7 +15,7 @@ angular.directive('my:sortable-column', function(columnName, compiledElement) {
       $('.sortable-column')
         .removeClass('sort-asc')
         .removeClass('sort-desc');
-      linkElement.addClass('sort-' + scope.todos.orderDirection);
+      linkElement.addClass('sort-' + scope.paginationParams.orderDirection);
     });
   }
 });

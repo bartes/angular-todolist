@@ -2,13 +2,15 @@
 
 <div ng:controller="TodosListController">
   <div class="pagination">
+    Per page:
+    <select name="paginationParams.perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
+    </select>
+
     <a ng:click="prevPage()">Prev page</a>
-    page {{currentPage}} of {{numPages}}
+    Page {{paginationParams.currentPage}} of {{paginationParams.numPages}}
     <a ng:click="nextPage()">Next page</a>
 
-    per page:
-    <select name="todos.perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
-    </select>
+    <a ng:click="load()">Reload grid</a>
   </div>
 
   <table class="grid">
@@ -22,7 +24,7 @@
     </thead>
 
     <tbody>
-      <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
+      <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
         <td>{{todo.name}}</td>
         <td>{{todo.estimate}}</td>
         <td>{{todo.done}}</td>
@@ -32,11 +34,11 @@
   </table>
 
   <pre>
-    orderBy = {{todos.orderBy}}
-    orderDirection = {{todos.orderDirection}}
-    perPage = {{todos.perPage}}
-    currentPage = {{todos.currentPage}}
-    numPages = {{todos.numPages}}
+    orderBy = {{paginationParams.orderBy}}
+    orderDirection = {{paginationParams.orderDirection}}
+    perPage = {{paginationParams.perPage}}
+    currentPage = {{paginationParams.currentPage}}
+    numPages = {{paginationParams.numPages}}
   </pre>
 </div>
 

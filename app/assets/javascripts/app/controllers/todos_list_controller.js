@@ -1,25 +1,27 @@
 function TodosListController($resource, $location) {
   var scope = this;
 
-  this.location = $location;
-
-  var params = this.location.hashSearch;
-  this.todos = {
-    orderBy: params.order_by || 'created_at',
-    orderDirection: params.order_direction || 'asc',
-    perPage: params.per_page || 10,
-    currentPage: params.page || 1,
-    numPages: null
-  };
-
   this.resource = $resource('/todos/paginate.json', {}, {
     paginate: {method: 'GET', isArray: false, verifyCache: true}
   });
 
+  this.location = $location;
+
+  this.todos = [];
+
+  var paramsFromLocationHash = this.location.hashSearch;
+  this.paginationParams = {
+    orderBy: paramsFromLocationHash.orderBy || 'created_at',
+    orderDirection: paramsFromLocationHash.orderDirection || 'asc',
+    perPage: paramsFromLocationHash.perPage || 10,
+    currentPage: paramsFromLocationHash.currentPage || 1,
+    numPages: 0
+  };
+
   this.load();
 
-  this.$watch('todos.perPage', function() {
-    scope.currentPage = 1;
+  this.$watch('paginationParams.perPage', function() {
+    scope.paginationParams.currentPage = 1;
     scope.load();
   });
 }
@@ -27,36 +29,36 @@ TodosListController.$inject = ['$resource', '$location'];
 
 TodosListController.prototype = {
   setOrderBy: function(name) {
-    if (this.todos.orderBy === name) {
+    if (this.paginationParams.orderBy === name) {
       this._swapOrderDirection();
     } else {
       this._setOrderDirection('asc');
-      this.todos.orderBy = name;
+      this.paginationParams.orderBy = name;
     }
 
     this.load();
   },
 
   _setOrderDirection: function(orderDirection) {
-    this.todos.orderDirection = orderDirection;
+    this.paginationParams.orderDirection = orderDirection;
   },
 
   _swapOrderDirection: function() {
-    var orderDirection = this.todos.orderDirection === 'asc' ? 'desc' : 'asc';
+    var orderDirection = this.paginationParams.orderDirection === 'asc' ? 'desc' : 'asc';
     this._setOrderDirection(orderDirection);
   },
 
   prevPage: function() {
-    this._setCurrentPage(this.currentPage - 1);
+    this.setCurrentPage(this.paginationParams.currentPage - 1);
   },
 
   nextPage: function() {
-    this._setCurrentPage(this.currentPage + 1);
+    this.setCurrentPage(this.paginationParams.currentPage + 1);
   },
 
-  _setCurrentPage: function(page) {
-    if (page >= 1 && page <= this.numPages) {
-      this.todos.currentPage = page;
+  setCurrentPage: function(page) {
+    if (page >= 1 && page <= this.paginationParams.numPages) {
+      this.paginationParams.currentPage = page;
       this.load();
     }
   },
@@ -64,17 +66,11 @@ TodosListController.prototype = {
   load: function() {
     var scope = this;
 
-    var params = {
-      order_by: scope.todos.orderBy,
-      order_direction: scope.todos.orderDirection,
-      per_page: scope.todos.perPage,
-      page: scope.todos.currentPage
-    };
+    this.location.update({hashSearch: this.paginationParams});
 
-    this.location.update({hashSearch: params});
-
-    this.resource.paginate(params, function(data) {
-      scope.todos = data;
+    this.resource.paginate(this.paginationParams, function(data) {
+      scope.todos = data.records;
+      scope.paginationParams = data.paginationParams;
     });
   }
 }
