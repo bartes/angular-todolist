@@ -14,6 +14,10 @@ th {
   width: 300px
 }
 
+th.sortable-column {
+  cursor: pointer;
+}
+
 th.sortable-column.sort-asc {
   background-image: url(/assets/sort-up.gif);
   background-repeat: no-repeat;

@@ -41,8 +41,8 @@
           <input id="todo-done-{{todo.id}}" type="checkbox" name="todo.done" />
           <label for="todo-done-{{todo.id}}">is done</label>
         </td>
-        <td grid:cell="todo.created_at" />
-        <td grid:cell="todo.updated_at" />
+        <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
+        <td grid:cell="todo.updated_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
       </tr>
     </tbody>
   </table>
