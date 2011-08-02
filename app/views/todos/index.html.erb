@@ -31,11 +31,11 @@
 
     <tbody>
       <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
-        <td grid:cell="todo.name"></td>
-        <td grid:cell="todo.estimate"></td>
-        <td grid:cell="todo.done"></td>
-        <td grid:cell="todo.created_at"></td>
-        <td grid:cell="todo.updated_at"></td>
+        <td grid:editable-cell="todo.name" />
+        <td grid:cell="todo.estimate" />
+        <td grid:cell="todo.done" />
+        <td grid:cell="todo.created_at" />
+        <td grid:cell="todo.updated_at" />
       </tr>
     </tbody>
   </table>

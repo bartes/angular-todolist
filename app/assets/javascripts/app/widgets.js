@@ -33,3 +33,37 @@ angular.widget('@grid:cell', function(attribute, compileElement) {
     });
   }
 });
+
+angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
+  var compiler = this;
+
+  return function(linkElement) {
+    var currentScope = this;
+
+    var spanElement = angular.element('<span />');
+    linkElement.append(spanElement);
+
+    var inputElement = angular.element('<input />');
+    inputElement.attr('type', 'text');
+    inputElement.attr('name', attribute);
+    linkElement.append(inputElement);
+    compiler.compile(inputElement)(currentScope.$new());
+    inputElement.hide();
+
+    spanElement.click(function() {
+      inputElement.show();
+      inputElement.focus();
+      spanElement.hide();
+    });
+
+    inputElement.blur(function() {
+      inputElement.hide();
+      spanElement.show();
+    });
+
+    currentScope.$watch(attribute, function(value) {
+      spanElement.text(value);
+    });
+  }
+});
+
