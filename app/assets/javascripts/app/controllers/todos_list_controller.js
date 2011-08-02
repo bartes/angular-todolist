@@ -1,12 +1,14 @@
 function TodosListController($resource, $location) {
   var scope = this;
 
+  this.loading = false;
   this.resource = $resource('/todos/paginate.json', {}, {
     paginate: {method: 'GET', isArray: false, verifyCache: true}
   });
 
   this.location = $location;
 
+  this.pages = [5, 10, 20, 50];
   this.todos = [];
 
   var paramsFromLocationHash = this.location.hashSearch;
@@ -48,6 +50,14 @@ TodosListController.prototype = {
     this._setOrderDirection(orderDirection);
   },
 
+  hasPrevPage: function() {
+    return this.paginationParams.currentPage > 1;
+  },
+
+  hasNextPage: function() {
+    return this.paginationParams.currentPage < this.paginationParams.numPages;
+  },
+
   prevPage: function() {
     this.setCurrentPage(this.paginationParams.currentPage - 1);
   },
@@ -68,9 +78,12 @@ TodosListController.prototype = {
 
     this.location.update({hashSearch: this.paginationParams});
 
+    this.loading = true;
     this.resource.paginate(this.paginationParams, function(data) {
       scope.todos = data.records;
       scope.paginationParams = data.paginationParams;
+
+      scope.loading = false;
     });
   }
 }

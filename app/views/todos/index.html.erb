@@ -3,14 +3,19 @@
 <div ng:controller="TodosListController">
   <div class="pagination">
     Per page:
-    <select name="paginationParams.perPage" ng:options="perPage for perPage in [5, 10, 20, 50]">
+    <select name="paginationParams.perPage" ng:options="perPage for perPage in pages">
     </select>
 
-    <a ng:click="prevPage()">Prev page</a>
+    <span ng:hide="hasPrevPage()">Prev page</span>
+    <a ng:show="hasPrevPage()" ng:click="prevPage()">Prev page</a>
+
     Page {{paginationParams.currentPage}} of {{paginationParams.numPages}}
-    <a ng:click="nextPage()">Next page</a>
+
+    <span ng:hide="hasNextPage()">Next page</span>
+    <a ng:show="hasNextPage()" ng:click="nextPage()">Next page</a>
 
     <a ng:click="load()">Reload grid</a>
+    <img src="/assets/spinner.gif" ng:show="loading" />
   </div>
 
   <table class="grid">
