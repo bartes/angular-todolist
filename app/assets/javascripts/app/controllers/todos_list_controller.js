@@ -9,6 +9,7 @@ function TodosListController($resource, $location, $invalid) {
   this.location = $location;
 
   this.pages = [5, 10, 20, 50];
+  this.estimates = [0, 1, 2, 3, 5, 8, 13, 21, 34];
   this.data = {};
   this.todos = [];
 

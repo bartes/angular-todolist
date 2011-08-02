@@ -40,23 +40,25 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   return function(linkElement) {
     var currentScope = this;
 
+    // wrap the input element
+    var inputElementHtml = linkElement.html();
+    linkElement.html('<span>' + inputElementHtml + '</span>');
+    var inputElement = linkElement.find('span:first');
+    inputElement.hide();
+    // compile the input element
+    compiler.compile(inputElement)(currentScope.$new());
+
+    // create an element for displaying cell's value
     var spanElement = angular.element('<span />');
     linkElement.append(spanElement);
 
-    var inputElement = angular.element('<input />');
-    inputElement.attr('type', 'text');
-    inputElement.attr('name', attribute);
-    linkElement.append(inputElement);
-    compiler.compile(inputElement)(currentScope.$new());
-    inputElement.hide();
-
     spanElement.click(function() {
       inputElement.show();
-      inputElement.focus();
+      inputElement.find('input,select').focus();
       spanElement.hide();
     });
 
-    inputElement.blur(function() {
+    inputElement.find('input,select').blur(function() {
       inputElement.hide();
       spanElement.show();
     });
