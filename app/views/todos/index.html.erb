@@ -21,29 +21,32 @@
   <table class="grid">
     <thead>
       <tr>
-        <th my:sortable-column="name">Name</th>
-        <th my:sortable-column="estimate">Estimate</th>
-        <th my:sortable-column="done">Done</th>
-        <th my:sortable-column="created_at">Created at</th>
+        <th grid:sortable-column="name">Name</th>
+        <th grid:sortable-column="estimate">Estimate</th>
+        <th gird:sortable-column="done">Done</th>
+        <th grid:sortable-column="created_at">Created at</th>
+        <th grid:sortable-column="updated_at">Updated at</th>
       </tr>
     </thead>
 
     <tbody>
       <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
-        <td>{{todo.name}}</td>
-        <td>{{todo.estimate}}</td>
-        <td>{{todo.done}}</td>
-        <td>{{todo.created_at}}</td>
+        <td grid:cell="todo.name"></td>
+        <td grid:cell="todo.estimate"></td>
+        <td grid:cell="todo.done"></td>
+        <td grid:cell="todo.created_at"></td>
+        <td grid:cell="todo.updated_at"></td>
       </tr>
     </tbody>
   </table>
 
+  <div>
+    <a ng:click="save()">Save</a>
+  </div>
+
   <pre>
-    orderBy = {{paginationParams.orderBy}}
-    orderDirection = {{paginationParams.orderDirection}}
-    perPage = {{paginationParams.perPage}}
-    currentPage = {{paginationParams.currentPage}}
-    numPages = {{paginationParams.numPages}}
+    todos = {{todos}}
+    paginationParams = {{paginationParams}}
   </pre>
 </div>
 

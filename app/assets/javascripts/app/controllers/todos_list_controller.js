@@ -1,4 +1,4 @@
-function TodosListController($resource, $location) {
+function TodosListController($resource, $location, $invalid) {
   var scope = this;
 
   this.loading = false;
@@ -9,6 +9,7 @@ function TodosListController($resource, $location) {
   this.location = $location;
 
   this.pages = [5, 10, 20, 50];
+  this.data = {};
   this.todos = [];
 
   var paramsFromLocationHash = this.location.hashSearch;
@@ -79,10 +80,19 @@ TodosListController.prototype = {
     this.location.update({hashSearch: this.paginationParams});
 
     this.loading = true;
-    this.resource.paginate(this.paginationParams, function(data) {
+    this.data = this.resource.paginate(this.paginationParams, function(data) {
       scope.todos = data.records;
       scope.paginationParams = data.paginationParams;
 
+      scope.loading = false;
+    });
+  },
+
+  save: function() {
+    var scope = this;
+
+    this.loading = true;
+    this.data.$save(function(data) {
       scope.loading = false;
     });
   }

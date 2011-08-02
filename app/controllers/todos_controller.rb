@@ -29,6 +29,16 @@ class TodosController < ApplicationController
     render :json => result
   end
 
+  def mass_update
+    records = params[:records]
+    records.each do |record|
+      todo = Todo.find(record[:id])
+      todo.update_attributes(record)
+    end
+
+    render :json => true
+  end
+
   # GET /todos/1
   # GET /todos/1.json
   def show
