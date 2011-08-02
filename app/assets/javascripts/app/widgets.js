@@ -52,13 +52,15 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     var spanElement = angular.element('<span />');
     linkElement.append(spanElement);
 
-    spanElement.click(function() {
+    linkElement.click(function(event) {
       inputElement.show();
       inputElement.find('input,select').focus();
       spanElement.hide();
+
+      event.stopPropagation();
     });
 
-    inputElement.find('input,select').blur(function() {
+    $('html').click(function() {
       inputElement.hide();
       spanElement.show();
     });
