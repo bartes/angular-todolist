@@ -12,7 +12,8 @@ function TodosListController($resource, grid) {
   this.grid = grid({
     controller: this,
     property: 'todos',
-    resource: this.resource
+    resource: this.resource,
+    perPage: 5
   });
 
   this.$watch('grid.perPage', function(newValue, oldValue) {

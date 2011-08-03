@@ -11,9 +11,9 @@ todos.Grid = function(opts) {
   this.property = opts.property;
   this.resource = opts.resource;
 
-  this.orderBy = 'created_at'
-  this.orderDirection = 'asc';
-  this.perPage = 10;
+  this.orderBy = opts.orderBy || 'created_at'
+  this.orderDirection = opts.orderDirection || 'asc';
+  this.perPage = opts.perPage || 10;
   this.currentPage = 1;
   this.numPages = 0;
   this.totalCount = 0;
