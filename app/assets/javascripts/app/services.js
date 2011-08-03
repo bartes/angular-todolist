@@ -87,6 +87,8 @@ todos.Grid.prototype = {
 
     this.loading = true;
     this.controller[this.property].$save(function(data) {
+      self.controller[self.property].records = data.records;
+
       self.loading = false;
     });
   }
