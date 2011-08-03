@@ -18,13 +18,8 @@ class TodosController < ApplicationController
 
     result = {
       :records => @todos,
-      :paginationParams => {
-        :orderBy => order_by, :orderDirection => order_direction,
-        :totalCount => @todos.total_count,
-        :numPages => @todos.num_pages,
-        :perPage => @todos.limit_value,
-        :currentPage => @todos.current_page
-      }
+      :totalCount => @todos.total_count,
+      :numPages => @todos.num_pages,
     }
     render :json => result
   end

@@ -13,3 +13,6 @@
 //= require 'app/controllers/todos_list_controller.js'
 //= require 'app/filters.js'
 //= require 'app/widgets.js'
+
+todos = {};
+

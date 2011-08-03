@@ -2,20 +2,24 @@
 
 <div ng:controller="TodosListController">
   <div class="pagination">
-    Per page:
-    <select name="paginationParams.perPage" ng:options="perPage for perPage in pages" ng:format="number">
-    </select>
+    <span>
+      Per page:
+      <select name="grid.perPage" ng:options="perPage for perPage in pages" ng:format="number">
+      </select>
+    </span>
 
-    <span ng:hide="hasPrevPage()">Prev page</span>
-    <a ng:show="hasPrevPage()" ng:click="prevPage()">Prev page</a>
+    <span ng:hide="grid.hasPrevPage()">Prev page</span>
+    <a ng:show="grid.hasPrevPage()" ng:click="grid.prevPage()">Prev page</a>
 
-    Page {{paginationParams.currentPage}} of {{paginationParams.numPages}}
+    <span>Page {{grid.currentPage}} of {{grid.numPages}}</span>
 
-    <span ng:hide="hasNextPage()">Next page</span>
-    <a ng:show="hasNextPage()" ng:click="nextPage()">Next page</a>
+    <span ng:hide="grid.hasNextPage()">Next page</span>
+    <a ng:show="grid.hasNextPage()" ng:click="grid.nextPage()">Next page</a>
 
-    <a ng:click="load()">Reload grid</a>
-    <img src="/assets/spinner.gif" ng:show="loading" />
+    <span>Total count: {{grid.totalCount}}</span>
+
+    <a ng:click="grid.load()">Reload grid</a>
+    <img src="/assets/spinner.gif" ng:show="grid.loading" />
   </div>
 
   <table class="grid">
@@ -30,7 +34,7 @@
     </thead>
 
     <tbody>
-      <tr ng:repeat="todo in todos" ng:class-even="'even'" ng:class-odd="'odd'">
+      <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
         <td grid:editable-cell="todo.name">
           <input type="text" name="todo.name" />
         </td>
@@ -52,14 +56,14 @@
   </table>
 
   <div>
-    <a ng:click="save()">Save</a>
+    <a ng:click="grid.save()">Save</a>
   </div>
 
   <pre>
     todos = {{todos|json}}
   </pre>
   <pre>
-    paginationParams = {{paginationParams|json}}
+    grid = {{grid|json}}
   </pre>
 </div>
 

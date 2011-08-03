@@ -4,17 +4,17 @@ angular.directive('grid:sortable-column', function(columnName, compiledElement) 
 
     linkElement.addClass('sortable-column');
 
-    if (columnName == scope.paginationParams.orderBy) {
-      linkElement.addClass('sort-' + scope.paginationParams.orderDirection);
+    if (columnName == scope.grid.orderBy) {
+      linkElement.addClass('sort-' + scope.grid.orderDirection);
     }
 
     linkElement.click(function() {
-      scope.setOrderBy(columnName);
+      scope.grid.setOrderBy(columnName);
 
       $('.sortable-column')
         .removeClass('sort-asc')
         .removeClass('sort-desc');
-      linkElement.addClass('sort-' + scope.paginationParams.orderDirection);
+      linkElement.addClass('sort-' + scope.grid.orderDirection);
     });
   }
 });
