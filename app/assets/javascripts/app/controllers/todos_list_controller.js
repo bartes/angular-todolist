@@ -3,7 +3,7 @@ function TodosListController($resource, $location, $invalid) {
 
   this.loading = false;
   this.resource = $resource('/todos/paginate.json', {}, {
-    paginate: {method: 'GET', isArray: false, verifyCache: true}
+    get: {method: 'GET', isArray: false, verifyCache: true}
   });
 
   this.location = $location;
@@ -17,17 +17,19 @@ function TodosListController($resource, $location, $invalid) {
   this.paginationParams = {
     orderBy: paramsFromLocationHash.orderBy || 'created_at',
     orderDirection: paramsFromLocationHash.orderDirection || 'asc',
-    perPage: paramsFromLocationHash.perPage || 10,
+    perPage: angular.formatter.number.parse(paramsFromLocationHash.perPage || 10),
     currentPage: paramsFromLocationHash.currentPage || 1,
     numPages: 0
   };
 
-  this.load();
+  this.$watch('paginationParams.perPage', function(newValue, oldValue) {
+    if (newValue === oldValue) { return; }
 
-  this.$watch('paginationParams.perPage', function() {
     scope.paginationParams.currentPage = 1;
     scope.load();
   });
+
+  this.load();
 }
 TodosListController.$inject = ['$resource', '$location'];
 
@@ -81,7 +83,7 @@ TodosListController.prototype = {
     this.location.update({hashSearch: this.paginationParams});
 
     this.loading = true;
-    this.data = this.resource.paginate(this.paginationParams, function(data) {
+    this.data = this.resource.get(this.paginationParams, function(data) {
       scope.todos = data.records;
       scope.paginationParams = data.paginationParams;
 

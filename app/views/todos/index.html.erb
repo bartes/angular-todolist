@@ -3,7 +3,7 @@
 <div ng:controller="TodosListController">
   <div class="pagination">
     Per page:
-    <select name="paginationParams.perPage" ng:options="perPage for perPage in pages">
+    <select name="paginationParams.perPage" ng:options="perPage for perPage in pages" ng:format="number">
     </select>
 
     <span ng:hide="hasPrevPage()">Prev page</span>
@@ -34,13 +34,17 @@
         <td grid:editable-cell="todo.name">
           <input type="text" name="todo.name" />
         </td>
-        <td grid:editable-cell="todo.estimate">
-          <select name="todo.estimate" ng:options="estimate for estimate in estimates" />
+
+        <td grid:editable-cell="todo.estimate | number:0">
+          <%#<select name="todo.estimate" ng:options="estimate for estimate in estimates" />%>
+          <input type="text" name="todo.estimate" />
         </td>
+
         <td grid:editable-cell="todo.done">
           <input id="todo-done-{{todo.id}}" type="checkbox" name="todo.done" />
           <label for="todo-done-{{todo.id}}">is done</label>
         </td>
+
         <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
         <td grid:cell="todo.updated_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
       </tr>
@@ -52,10 +56,10 @@
   </div>
 
   <pre>
-    todos = {{todos}}
+    todos = {{todos|json}}
   </pre>
   <pre>
-    paginationParams = {{paginationParams}}
+    paginationParams = {{paginationParams|json}}
   </pre>
 </div>
 

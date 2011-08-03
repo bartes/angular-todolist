@@ -30,13 +30,15 @@ class TodosController < ApplicationController
   end
 
   def mass_update
-    records = params[:records]
+    data = params[:records]
+    records = Todo.find(data.map { |d| d[:id] })
+
     records.each do |record|
-      todo = Todo.find(record[:id])
-      todo.update_attributes(record)
+      attributes = data.find { |d| d[:id] == record.id }
+      record.update_attributes(attributes)
     end
 
-    render :json => true
+    render :json => records
   end
 
   # GET /todos/1
