@@ -10,24 +10,31 @@
 .tasks { margin: 10px; }
 .stats { margin: 10px; }
 
-th {
+.grid th {
   width: 300px
 }
 
-th.sortable-column {
+.grid th.sortable-column {
   cursor: pointer;
 }
 
-th.sortable-column.sort-asc {
+.grid th.sortable-column.sort-asc {
   background-image: url(/assets/sort-up.gif);
   background-repeat: no-repeat;
 }
 
-th.sortable-column.sort-desc {
+.grid th.sortable-column.sort-desc {
   background-image: url(/assets/sort-down.gif);
   background-repeat: no-repeat;
 }
 
-tr.even {
+.grid tr.even {
   background-color: lightBlue;
 }
+
+.grid .dirty {
+  background-image: url('/assets/dirty.gif');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+

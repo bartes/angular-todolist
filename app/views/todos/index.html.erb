@@ -45,8 +45,8 @@
         </td>
 
         <td grid:editable-cell="todo.done">
-          <input id="todo-done-{{todo.id}}" type="checkbox" name="todo.done" />
-          <label for="todo-done-{{todo.id}}">is done</label>
+          <input id="todo-done-{{$index}}" type="checkbox" name="todo.done" />
+          <label for="todo-done-{{$index}}">is done</label>
         </td>
 
         <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
@@ -57,6 +57,7 @@
 
   <div>
     <button ng:click="grid.save()">Save</button>
+    <button ng:click="grid.cancel()">Cancel</button>
   </div>
 
   <pre>

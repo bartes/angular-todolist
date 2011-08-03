@@ -52,17 +52,39 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     var spanElement = angular.element('<span />');
     linkElement.append(spanElement);
 
-    linkElement.click(function(event) {
+    // cache the old value
+    var oldValue = currentScope.$eval(attribute);
+
+    var showInput = function() {
       inputElement.show();
+      // focus on the input element
       inputElement.find('input,select').focus();
       spanElement.hide();
+    }
 
+    var hideInput = function() {
+      inputElement.hide();
+      spanElement.show();
+
+      var newValue = currentScope.$eval(attribute);
+      var cellIsDirty = newValue !== oldValue;
+      linkElement.toggleClass('dirty', cellIsDirty);
+    }
+
+    linkElement.click(function(event) {
+      showInput();
       event.stopPropagation();
     });
 
+    inputElement.keyup(function(event) {
+      var escOrEnterPressed = event.keyCode === 27 || event.keyCode === 13;
+      if (escOrEnterPressed) {
+        hideInput();
+      }
+    });
+
     $('html').click(function() {
-      inputElement.hide();
-      spanElement.show();
+      hideInput();
     });
 
     currentScope.$watch(attribute, function(value) {

@@ -11,6 +11,8 @@ todos.Grid = function(opts) {
   this.property = opts.property;
   this.resource = opts.resource;
 
+  this.masterData = null;
+
   this.orderBy = opts.orderBy || 'created_at'
   this.orderDirection = opts.orderDirection || 'asc';
   this.perPage = opts.perPage || 10;
@@ -63,6 +65,10 @@ todos.Grid.prototype = {
     }
   },
 
+  dirty: function() {
+    return !angular.Object.equals(this.controller[this.property], this.masterData);
+  },
+
   load: function() {
     var self = this;
 
@@ -75,6 +81,8 @@ todos.Grid.prototype = {
 
     this.loading = true;
     this.controller[this.property] = this.resource.get(params, function(data) {
+      self.masterData = angular.copy(data);
+
       self.totalCount = data.totalCount;
       self.numPages = data.numPages;
 
@@ -83,14 +91,22 @@ todos.Grid.prototype = {
   },
 
   save: function() {
+    if (!this.dirty()) { return false; }
+
     var self = this;
 
     this.loading = true;
     this.controller[this.property].$save(function(data) {
       self.controller[self.property].records = data.records;
+      self.masterData = angular.copy(data);
 
       self.loading = false;
     });
+  },
+
+  cancel: function() {
+    if (!this.dirty()) { return false; }
+    this.controller[this.property] = angular.copy(this.masterData);
   }
 }
 
