@@ -36,7 +36,7 @@
     <tbody>
       <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
         <td grid:editable-cell="todo.name" grid:property="grid">
-          <input type="text" name="todo.name" />
+          <input type="text" name="todo.name" ng:required />
         </td>
 
         <td grid:editable-cell="todo.estimate" grid:property="grid">

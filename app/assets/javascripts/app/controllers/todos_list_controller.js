@@ -1,10 +1,12 @@
-function TodosListController($resource, grid) {
+function TodosListController($resource, $window, grid) {
   var scope = this;
 
   this.todos = {};
-  this.resource = $resource('/todos/paginate.json', {}, {
+  this.$resource = $resource('/todos/paginate.json', {}, {
     get: {method: 'GET', isArray: false, verifyCache: true}
   });
+
+  this.$window = $window;
 
   this.estimates = [0, 1, 2, 3, 5, 8, 13, 21, 34];
   this.pages = [5, 10, 20, 50];
@@ -12,7 +14,7 @@ function TodosListController($resource, grid) {
   this.grid = grid({
     controller: this,
     property: 'todos',
-    resource: this.resource,
+    resource: this.$resource,
     perPage: 5
   });
 
@@ -25,5 +27,5 @@ function TodosListController($resource, grid) {
 
   this.grid.load();
 }
-TodosListController.$inject = ['$resource', 'Grid'];
+TodosListController.$inject = ['$resource', '$window', 'Grid'];
 

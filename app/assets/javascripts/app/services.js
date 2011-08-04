@@ -4,8 +4,8 @@ angular.service('xhrDefaults', function($xhr) {
   $xhr.defaults.headers.put['Content-Type'] = 'application/json';
 }, {$inject: ['$xhr'], $eager: true});
 
-todos.Grid = function($window, opts) {
-  this.$window = $window;
+todos.Grid = function($log, opts) {
+  this.$log = $log;
   var self = this;
 
   this.controller = opts.controller;
@@ -21,7 +21,7 @@ todos.Grid = function($window, opts) {
   this.numPages = 0;
   this.totalCount = 0;
 }
-todos.Grid.$inject = ['$window'];
+todos.Grid.$inject = ['$log'];
 
 todos.Grid.prototype = {
   setOrderBy: function(name) {
@@ -31,6 +31,8 @@ todos.Grid.prototype = {
       this._setOrderDirection('asc');
       this.orderBy = name;
     }
+
+    this.$log.info('[grid] setOrderBy, orderBy=', this.orderBy, ', orderDirection=', this.orderDirection);
 
     this.load();
   },
@@ -63,6 +65,7 @@ todos.Grid.prototype = {
   setCurrentPage: function(page) {
     if (page >= 1 && page <= this.numPages) {
       this.currentPage = page;
+      this.$log.info('[grid] setCurrnetPage=', this.currentPage);
       this.load();
     }
   },
@@ -76,8 +79,6 @@ todos.Grid.prototype = {
   },
 
   load: function() {
-    if (this.dirty() && !this.$window.confirm('Abandon changes?')) { return false; }
-
     var self = this;
 
     var params = {
@@ -86,6 +87,8 @@ todos.Grid.prototype = {
       perPage: this.perPage,
       currentPage: this.currentPage
     }
+
+    this.$log.info('[grid] loading data, params=', params);
 
     this.loading = true;
     this.controller[this.property] = this.resource.get(params, function(data) {
