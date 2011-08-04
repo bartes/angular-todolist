@@ -4,14 +4,15 @@ angular.service('xhrDefaults', function($xhr) {
   $xhr.defaults.headers.put['Content-Type'] = 'application/json';
 }, {$inject: ['$xhr'], $eager: true});
 
-todos.Grid = function(opts) {
+todos.Grid = function($window, opts) {
+  this.$window = $window;
   var self = this;
 
   this.controller = opts.controller;
   this.property = opts.property;
   this.resource = opts.resource;
 
-  this.masterData = null;
+  this.masterData = [];
 
   this.orderBy = opts.orderBy || 'created_at'
   this.orderDirection = opts.orderDirection || 'asc';
@@ -20,6 +21,7 @@ todos.Grid = function(opts) {
   this.numPages = 0;
   this.totalCount = 0;
 }
+todos.Grid.$inject = ['$window'];
 
 todos.Grid.prototype = {
   setOrderBy: function(name) {
@@ -69,7 +71,13 @@ todos.Grid.prototype = {
     return !angular.Object.equals(this.controller[this.property], this.masterData);
   },
 
+  isCellDirty: function(rowIndex, property) {
+    return this.masterData.records[rowIndex][property] !== this.controller[this.property].records[rowIndex][property];
+  },
+
   load: function() {
+    if (this.dirty() && !this.$window.confirm('Abandon changes?')) { return false; }
+
     var self = this;
 
     var params = {
@@ -114,7 +122,7 @@ angular.service('Grid', function() {
   var scope = this;
 
   return function(opts) {
-    return new todos.Grid(opts);
+    return scope.$new(todos.Grid, opts);
   }
 });
 

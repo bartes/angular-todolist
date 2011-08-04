@@ -34,26 +34,40 @@ angular.widget('@grid:cell', function(attribute, compileElement) {
   }
 });
 
+angular.directive('grid:mark-dirty', function(expression, element) {
+  return function(element) {
+    var scope = this;
+
+    scope.$watch(expression, function() {
+      var isDirty = scope.$eval(expression);
+      element.toggleClass('dirty', isDirty);
+    });
+  }
+});
+
 angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   var compiler = this;
+  compiler.directives(true);
+  compiler.descend(true);
+
+  var gridProperty = compiledElement.attr('grid:property');
+  var property = _.last(attribute.split('.'));
+  compiledElement.attr('grid:mark-dirty', gridProperty + '.isCellDirty($index, "' + property + '")');
+
+  // wrap the input element
+  var inputElementHtml = compiledElement.html();
+  compiledElement.html('<span>' + inputElementHtml + '</span>');
+
+  // create an element for displaying cell's value
+  var spanElement = angular.element('<span />');
+  compiledElement.append(spanElement);
 
   return function(linkElement) {
     var currentScope = this;
 
-    // wrap the input element
-    var inputElementHtml = linkElement.html();
-    linkElement.html('<span>' + inputElementHtml + '</span>');
     var inputElement = linkElement.find('span:first');
     inputElement.hide();
-    // compile the input element
-    compiler.compile(inputElement)(currentScope.$new());
-
-    // create an element for displaying cell's value
-    var spanElement = angular.element('<span />');
-    linkElement.append(spanElement);
-
-    // cache the old value
-    var oldValue = currentScope.$eval(attribute);
+    var spanElement = linkElement.find('span:last');
 
     var showInput = function() {
       inputElement.show();
@@ -65,10 +79,6 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     var hideInput = function() {
       inputElement.hide();
       spanElement.show();
-
-      var newValue = currentScope.$eval(attribute);
-      var cellIsDirty = newValue !== oldValue;
-      linkElement.toggleClass('dirty', cellIsDirty);
     }
 
     linkElement.click(function(event) {

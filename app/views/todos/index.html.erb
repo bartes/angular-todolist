@@ -35,16 +35,15 @@
 
     <tbody>
       <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
-        <td grid:editable-cell="todo.name">
+        <td grid:editable-cell="todo.name" grid:property="grid">
           <input type="text" name="todo.name" />
         </td>
 
-        <td grid:editable-cell="todo.estimate | number:0">
-          <%#<select name="todo.estimate" ng:options="estimate for estimate in estimates" />%>
-          <input type="text" name="todo.estimate" />
+        <td grid:editable-cell="todo.estimate" grid:property="grid">
+          <select name="todo.estimate" ng:options="estimate for estimate in estimates" />
         </td>
 
-        <td grid:editable-cell="todo.done">
+        <td grid:editable-cell="todo.done" grid:property="grid">
           <input id="todo-done-{{$index}}" type="checkbox" name="todo.done" />
           <label for="todo-done-{{$index}}">is done</label>
         </td>
