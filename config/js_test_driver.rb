@@ -10,7 +10,8 @@ includes 'vendor/assets/javascripts/angular/angular.js'
 includes 'vendor/assets/javascripts/tests/angular/angular-mocks.js'
 includes 'vendor/assets/javascripts/underscore.js'
 
-includes 'app/assets/javascripts/**/*.js'
+includes 'app/assets/javascripts/application.js'
+includes 'app/assets/javascripts/app/**/*.js'
 
 includes 'spec/javascripts/unit/spec_helper.js'
 includes 'spec/javascripts/unit/**/*.js'
