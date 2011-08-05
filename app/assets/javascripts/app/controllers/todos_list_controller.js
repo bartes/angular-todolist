@@ -2,7 +2,7 @@ function TodosListController($resource, $window, grid) {
   var scope = this;
 
   this.todos = {};
-  this.todos2 = {};
+  this.secondTodos = {};
   this.$resource = $resource('/todos/paginate.json', {}, {
     get: {method: 'GET', isArray: false, verifyCache: true}
   });
@@ -21,7 +21,7 @@ function TodosListController($resource, $window, grid) {
 
   this.secondGrid = grid({
     controller: this,
-    property: 'todos2',
+    property: 'secondTodos',
     resource: this.$resource,
     perPage: 10
   });

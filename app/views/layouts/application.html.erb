@@ -11,6 +11,7 @@
     <%= yield %>
 
     <script src="/assets/angular/angular.js" ng:autobind></script>
+    <%= javascript_include_tag "vendor" %>
     <%= javascript_include_tag "application" %>
   </body>
 </html>

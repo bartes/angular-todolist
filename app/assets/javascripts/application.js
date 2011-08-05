@@ -5,14 +5,9 @@
 // the compiled file.
 //
 //= require_self
-//= require jquery-1.6.2
-//= require underscore
 //= require 'app/services'
-//= require 'app/controllers/todo_editor_controller.js'
-//= require 'app/controllers/todos_controller.js'
-//= require 'app/controllers/todos_list_controller.js'
-//= require 'app/filters.js'
-//= require 'app/widgets.js'
+//= require 'app/widgets'
+//= require 'app/controllers'
 
 todos = {};
 
