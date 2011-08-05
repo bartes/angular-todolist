@@ -2,6 +2,7 @@ function TodosListController($resource, $window, grid) {
   var scope = this;
 
   this.todos = {};
+  this.todos2 = {};
   this.$resource = $resource('/todos/paginate.json', {}, {
     get: {method: 'GET', isArray: false, verifyCache: true}
   });
@@ -18,14 +19,15 @@ function TodosListController($resource, $window, grid) {
     perPage: 5
   });
 
-  this.$watch('grid.perPage', function(newValue, oldValue) {
-    if (newValue === oldValue) { return; }
-
-    scope.grid.currentPage = 1;
-    scope.grid.load();
+  this.secondGrid = grid({
+    controller: this,
+    property: 'todos2',
+    resource: this.$resource,
+    perPage: 10
   });
 
   this.grid.load();
+  this.secondGrid.load();
 }
 TodosListController.$inject = ['$resource', '$window', 'Grid'];
 

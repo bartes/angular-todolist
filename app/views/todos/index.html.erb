@@ -1,66 +1,82 @@
 <h1><%= link_to "Listing todos", todos_path %></h1>
 
 <div ng:controller="TodosListController">
-  <div class="pagination">
-    <span>
-      Per page:
-      <select name="grid.perPage" ng:options="perPage for perPage in pages" ng:format="number">
-      </select>
-    </span>
+  <div grid:container="grid">
+    <div grid:pagination></div>
 
-    <span ng:hide="grid.hasPrevPage()">Prev page</span>
-    <a ng:show="grid.hasPrevPage()" ng:click="grid.prevPage()">Prev page</a>
+    <table class="grid">
+      <thead>
+        <tr>
+          <th grid:sortable-column="name">Name</th>
+          <th grid:sortable-column="estimate">Estimate</th>
+          <th grid:sortable-column="done">Done</th>
+          <th grid:sortable-column="created_at">Created at</th>
+          <th grid:sortable-column="updated_at">Updated at</th>
+        </tr>
+      </thead>
 
-    <span>Page {{grid.currentPage}} of {{grid.numPages}}</span>
+      <tbody>
+        <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
+          <td grid:editable-cell="todo.name">
+            <input type="text" name="todo.name" ng:required />
+          </td>
 
-    <span ng:hide="grid.hasNextPage()">Next page</span>
-    <a ng:show="grid.hasNextPage()" ng:click="grid.nextPage()">Next page</a>
+          <td grid:editable-cell="todo.estimate">
+            <select name="todo.estimate" ng:options="estimate for estimate in estimates" />
+          </td>
 
-    <span>Total count: {{grid.totalCount}}</span>
+          <td grid:editable-cell="todo.done">
+            <input id="todo-done-{{$index}}" type="checkbox" name="todo.done" />
+            <label for="todo-done-{{$index}}">is done</label>
+          </td>
 
-    <a ng:click="grid.load()">Reload grid</a>
-    <img src="/assets/spinner.gif" ng:show="grid.loading" />
+          <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
+          <td grid:cell="todo.updated_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <button ng:click="grid.save()">Save</button>
+      <button ng:click="grid.cancel()">Cancel</button>
+    </div>
   </div>
 
-  <table class="grid">
-    <thead>
-      <tr>
-        <th grid:sortable-column="name">Name</th>
-        <th grid:sortable-column="estimate">Estimate</th>
-        <th grid:sortable-column="done">Done</th>
-        <th grid:sortable-column="created_at">Created at</th>
-        <th grid:sortable-column="updated_at">Updated at</th>
-      </tr>
-    </thead>
+  <div grid:container="secondGrid">
+    <div grid:pagination></div>
 
-    <tbody>
-      <tr ng:repeat="todo in todos.records" ng:class-even="'even'" ng:class-odd="'odd'">
-        <td grid:editable-cell="todo.name" grid:property="grid">
-          <input type="text" name="todo.name" ng:required />
-        </td>
+    <table class="grid">
+      <thead>
+        <tr>
+          <th grid:sortable-column="name">Name</th>
+          <th grid:sortable-column="estimate">Estimate</th>
+          <th grid:sortable-column="done">Done</th>
+          <th grid:sortable-column="created_at">Created at</th>
+          <th grid:sortable-column="updated_at">Updated at</th>
+        </tr>
+      </thead>
 
-        <td grid:editable-cell="todo.estimate" grid:property="grid">
-          <select name="todo.estimate" ng:options="estimate for estimate in estimates" />
-        </td>
+      <tbody>
+        <tr ng:repeat="todo in todos2.records" ng:class-even="'even'" ng:class-odd="'odd'">
+          <td grid:editable-cell="todo.name">
+            <input type="text" name="todo.name" ng:required />
+          </td>
 
-        <td grid:editable-cell="todo.done" grid:property="grid">
-          <input id="todo-done-{{$index}}" type="checkbox" name="todo.done" />
-          <label for="todo-done-{{$index}}">is done</label>
-        </td>
+          <td grid:editable-cell="todo.estimate">
+            <select name="todo.estimate" ng:options="estimate for estimate in estimates" />
+          </td>
 
-        <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
-        <td grid:cell="todo.updated_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
-      </tr>
-    </tbody>
-  </table>
+          <td grid:editable-cell="todo.done">
+            <input id="todo-done-{{$index}}" type="checkbox" name="todo.done" />
+            <label for="todo-done-{{$index}}">is done</label>
+          </td>
 
-  <div>
-    <button ng:click="grid.save()">Save</button>
-    <button ng:click="grid.cancel()">Cancel</button>
+          <td grid:cell="todo.created_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
+          <td grid:cell="todo.updated_at | date:'yyyy-MM-dd HH:mm:ss Z'" />
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <pre>
-    todos = {{todos|json}}
-  </pre>
 </div>
 
