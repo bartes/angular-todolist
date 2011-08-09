@@ -37,7 +37,7 @@
     </table>
 
     <div>
-      <button ng:click="grid.save()">Save</button>
+      <button ng:click="grid.save()" ng:disabled="{{!grid.isValid()}}">Save</button>
       <button ng:click="grid.cancel()">Cancel</button>
     </div>
   </div>

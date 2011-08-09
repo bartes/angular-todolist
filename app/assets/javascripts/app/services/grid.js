@@ -1,5 +1,6 @@
-todos.Grid = function($log, opts) {
+todos.Grid = function($log, $invalidWidgets, opts) {
   this.$log = $log;
+  this.$invalidWidgets = $invalidWidgets;
 
   var self = this;
 
@@ -17,7 +18,7 @@ todos.Grid = function($log, opts) {
   this.numPages = 0;
   this.totalCount = 0;
 }
-todos.Grid.$inject = ['$log'];
+todos.Grid.$inject = ['$log', '$invalidWidgets'];
 
 todos.Grid.prototype = {
   setOrderBy: function(name) {
@@ -72,6 +73,23 @@ todos.Grid.prototype = {
 
   isCellDirty: function(rowIndex, property) {
     return this.masterData.records[rowIndex][property] !== this.controller[this.property].records[rowIndex][property];
+  },
+
+  isValid: function() {
+    return this._invalidWidgets().length == 0;
+  },
+
+  /**
+   * Returns an array of invalid widgets for the current grid.
+   */
+  _invalidWidgets: function() {
+    var self = this;
+    var scopedInvalidWidgets = _(this.$invalidWidgets).select(function(invalidWidget) {
+      var grid = invalidWidget.parents('.grid-container').data('grid-instance');
+      return grid === self;
+    });
+
+    return scopedInvalidWidgets;
   },
 
   load: function() {

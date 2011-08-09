@@ -11,6 +11,7 @@ angular.widget('@grid:container', function(gridProperty, element) {
     parentScope.$grid = parentScope[gridProperty];
 
     linkElement.addClass('grid-container');
+    linkElement.data('grid-instance', parentScope.$grid);
   }
 });
 
@@ -111,7 +112,6 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   compiler.directives(true);
   compiler.descend(true);
 
-  var gridProperty = compiledElement.parents('.grid-container').data('grid-property');
   var property = _.last(attribute.split('.'));
   compiledElement.attr('grid:mark-dirty',  property);
 
@@ -129,6 +129,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     var inputElementContainer = linkElement.find('span:first');
     inputElementContainer.hide();
     var inputElement = inputElementContainer.find('input,select');
+    inputElement.addClass('grid-input');
     var spanElement = linkElement.find('span:last');
 
     var showInput = function() {
@@ -164,7 +165,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
       }
     });
 
-    $('html').click(function() {
+    $('body').click(function() {
       hideInput();
     });
 
