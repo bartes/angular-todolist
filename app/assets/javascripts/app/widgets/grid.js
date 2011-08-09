@@ -123,23 +123,33 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   var spanElement = angular.element('<span />');
   compiledElement.append(spanElement);
 
-  return function(linkElement) {
+  return angular.extend(function($invalidWidgets, linkElement) {
     var currentScope = this;
 
-    var inputElement = linkElement.find('span:first');
-    inputElement.hide();
+    var inputElementContainer = linkElement.find('span:first');
+    inputElementContainer.hide();
+    var inputElement = inputElementContainer.find('input,select');
     var spanElement = linkElement.find('span:last');
 
     var showInput = function() {
-      inputElement.show();
+      inputElementContainer.show();
       // focus on the input element
-      inputElement.find('input,select').focus();
+      inputElement.focus();
       spanElement.hide();
     }
 
     var hideInput = function() {
-      inputElement.hide();
-      spanElement.show();
+      if (inputElementContainer.is(':visible')) {
+        // check if the input element has validation errors
+        var hasErrors = _($invalidWidgets).detect(function(invalidElement) {
+          return invalidElement.get(0) === inputElement.get(0);
+        });
+
+        if (!hasErrors) {
+          inputElementContainer.hide();
+          spanElement.show();
+        }
+      }
     }
 
     linkElement.click(function(event) {
@@ -147,7 +157,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
       event.stopPropagation();
     });
 
-    inputElement.keyup(function(event) {
+    inputElementContainer.keyup(function(event) {
       var escOrEnterPressed = event.keyCode === 27 || event.keyCode === 13;
       if (escOrEnterPressed) {
         hideInput();
@@ -161,5 +171,5 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     currentScope.$watch(attribute, function(value) {
       spanElement.text(value);
     });
-  }
+  }, { $inject: ['$invalidWidgets'] });
 });

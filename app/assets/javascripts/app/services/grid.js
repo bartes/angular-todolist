@@ -1,5 +1,6 @@
 todos.Grid = function($log, opts) {
   this.$log = $log;
+
   var self = this;
 
   this.controller = opts.controller;
