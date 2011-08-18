@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Angular Rails seed</title>
     <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "vendor" %>
 
     <%= csrf_meta_tags %>
   </head>
@@ -11,7 +12,6 @@
     <%= yield %>
 
     <script src="/assets/angular/angular.js" ng:autobind></script>
-    <%= javascript_include_tag "vendor" %>
     <%= javascript_include_tag "application" %>
   </body>
 </html>

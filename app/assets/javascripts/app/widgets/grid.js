@@ -1,17 +1,16 @@
 angular.widget('@grid:container', function(gridProperty, element) {
+  element.removeAttr('grid:container');
+  element.addClass('grid-container');
+
   var compiler = this;
-  compiler.descend(true);
-  compiler.directives(true);
+  var template = compiler.compile(element);
 
-  // create a new scope for the grid container
-  element.attr('ng:controller', 'angular.noop');
+  return function(element) {
+    var scope = this;
+    var childScope = scope.$new();
+    childScope.$grid = scope[gridProperty];
 
-  return function(linkElement) {
-    var parentScope = this;
-    parentScope.$grid = parentScope[gridProperty];
-
-    linkElement.addClass('grid-container');
-    linkElement.data('grid-instance', parentScope.$grid);
+    template(childScope);
   }
 });
 

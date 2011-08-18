@@ -1,3 +1,5 @@
-//= require jquery-1.6.2
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui
 //= require underscore
 

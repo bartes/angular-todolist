@@ -1,0 +1,41 @@
+<h2>$watch</h2>
+
+<div ng:controller="OuterController">
+  <pre>
+    outerEvalCycles = {{outerEvalCycles}}
+  </pre>
+
+  <input type="text" name="bar" />
+  <pre>{{bar}}</pre>
+
+  <div ng:controller="MyController">
+    <input type="text" name="bar" />
+    <pre>{{bar}}</pre>
+    <pre>{{$parent.bar}}</pre>
+
+    <input type="text" name="_newItemValue" />
+    <button ng:click="addItem()">Add</button>
+
+    <ul>
+      <li ng:repeat="item in items">
+        <input type="text" name="item.value" />
+        [<a ng:click="items.$remove(item)">x</a>]
+      </li>
+    </ul>
+
+    <button ng:click="changeFirstItemName()">Change first item name</button>
+
+    <pre>
+      evalCycles = {{evalCycles}}
+
+      itemsCount = {{itemsCount}}
+      oldItemsCount = {{oldItemsCount}}
+
+      items = {{items|json}}
+      itemsMasterCopy = {{itemsMasterCopy|json}}
+    </pre>
+  </div>
+</div>
+
+<script type="text/javascript" src="/assets/app/sandbox_eval.js"></script>
+

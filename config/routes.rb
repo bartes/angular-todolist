@@ -6,5 +6,8 @@ Angular::Application.routes.draw do
     end
   end
 
+  match '/sandbox/watch' => 'sandbox#watch'
+  match '/sandbox/tabs' => 'sandbox#tabs'
+
   root :to => 'index#index'
 end
