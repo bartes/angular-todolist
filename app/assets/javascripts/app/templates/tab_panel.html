@@ -1,0 +1,10 @@
+<div class="tab-panel">
+  <ul>
+    <li ng:repeat="tab in $tabPanel.getTabs()" ng:class="$tabPanel._cssClassForTab($index)">
+      <a ng:click="$tabPanel.setActiveTab($index)">{{tab.title}}</a>
+      [<a ng:click="$tabPanel.closeTab($index)">x</a>]
+    </li>
+  </ul>
+  <div ng:hide="!$tabPanel.isActiveTab($index)" ng:repeat="tab in $tabPanel.getTabs()">{{tab.content}}</div>
+</div>
+

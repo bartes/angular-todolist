@@ -1,0 +1,4 @@
+function TreeController() {
+  this.nodes = [];
+
+}

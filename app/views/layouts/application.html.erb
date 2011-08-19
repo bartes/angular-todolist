@@ -5,13 +5,13 @@
     <title>Angular Rails seed</title>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "vendor" %>
+    <script src="/assets/angular/angular.js" ng:autobind></script>
+    <%= javascript_include_tag "application" %>
 
     <%= csrf_meta_tags %>
   </head>
   <body>
     <%= yield %>
-
-    <script src="/assets/angular/angular.js" ng:autobind></script>
-    <%= javascript_include_tag "application" %>
   </body>
 </html>
+
