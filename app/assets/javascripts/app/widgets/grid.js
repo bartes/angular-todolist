@@ -1,58 +1,42 @@
 angular.widget('@grid:container', function(gridProperty, element) {
-  element.removeAttr('grid:container');
   element.addClass('grid-container');
 
   var compiler = this;
-  var template = compiler.compile(element);
+  compiler.descend(true);
+  compiler.directives(true);
+  compiler.scope(true);
 
-  return function(element) {
+  return angular.extend(function($log, $invalidWidgets, element) {
     var scope = this;
-    var childScope = scope.$new();
-    childScope.$grid = scope[gridProperty];
+    var gridInstance = scope[gridProperty];
+    scope.$grid = gridInstance;
 
-    template(childScope);
-  }
+    gridInstance._getInvalidWidgets = function() {
+      var scopedInvalidWidgets = _($invalidWidgets).select(function(widget) {
+        return element.find(widget).length > 0;
+      });
+
+      $log.info('$invalidWidgets for ', scope.$grid, ' = ', scopedInvalidWidgets);
+      return scopedInvalidWidgets;
+    }
+
+  }, { $inject: ['$log', '$invalidWidgets'] });
 });
 
-angular.widget('@grid:pagination', function(attribute, compiledElement) {
+angular.widget('@grid:pagination', function(attribute, element) {
   var compiler = this;
   compiler.descend(true);
   compiler.directives(true);
 
-  // create pagination
-  compiledElement.append(angular.element('<span />').attr('ng:hide', '$grid.hasPrevPage()').text('Prev page'));
-  compiledElement.append(angular.element('<a />').attr('ng:show', '$grid.hasPrevPage()').attr('ng:click', '$grid.prevPage()').text('Prev page'))
-  compiledElement.append(angular.element('<span />').text('Page {{$grid.currentPage}} of {{$grid.numPages}}'));
-  compiledElement.append(angular.element('<span />').attr('ng:hide', '$grid.hasNextPage()').text('Next page'));
-  compiledElement.append(angular.element('<a />').attr('ng:show', '$grid.hasNextPage()').attr('ng:click', '$grid.nextPage()').text('Next page'))
+  var ngInclude = angular.element('<ng:include />').attr('src', "'/assets/app/templates/grid_pagination.html'")
+  element.append(ngInclude);
 
-  // create per page select box
-  var perPageContainer = angular.element('<span />');
-  var perPageSelectLabel = angular.element('<label />');
-  perPageSelectLabel
-    .attr('for', 'perPage-{{$grid.$id}}')
-    .text('Per page');
-  perPageContainer.append(perPageSelectLabel);
-  var perPageSelect = angular.element('<select />');
-  perPageSelect
-    .attr('name', '$grid.perPage')
-    .attr('id', 'perPage-{{$grid.$id}}')
-    .attr('ng:options', 'perPage for perPage in pages')
-    .attr('ng:format', 'number');
-  perPageContainer.append(perPageSelect);
-  compiledElement.append(perPageContainer);
+  return function(element) {
+    var scope = this;
 
-  // grid reload and spinner
-  compiledElement.append(angular.element('<a />').attr('ng:click', '$grid.load()').text('Reload'));
-  compiledElement.append(angular.element('img').attr('src', '/assets/spinner.gif').attr('ng:show', '$grid.loading'));
-
-  compiledElement.addClass('pagination');
-
-  return function(linkElement) {
-    var currentScope = this;
-    currentScope.$watch('$grid.perPage', function() {
-      currentScope.$grid.currentPage = 1;
-      currentScope.$grid.load();
+    scope.$watch('$grid.perPage', function() {
+      scope.$grid.currentPage = 1;
+      scope.$grid.load();
     });
   };
 });

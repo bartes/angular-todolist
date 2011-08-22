@@ -3,7 +3,6 @@
 <div ng:controller="TodosListController">
   <div grid:container="grid">
     <div grid:pagination></div>
-    {{$foo}}
 
     <table class="grid">
       <thead>
@@ -38,10 +37,17 @@
     </table>
 
     <div>
-      <button ng:click="grid.save()" ng:disabled="{{!grid.isValid()}}">Save</button>
-      <button ng:click="grid.cancel()">Cancel</button>
+      <button ng:click="$grid.save()" ng:disabled="{{!$grid.canBeSaved()}}">Save</button>
+      <button ng:click="$grid.cancel()" ng:disabled="{{!$grid.dirty()}}">Cancel</button>
     </div>
+
+    <pre>
+      $grid.canBeSaved() = {{$grid.canBeSaved()}}
+      $grid.dirty = {{$grid.dirty()}}
+    </pre>
   </div>
+
+  <hr />
 
   <div grid:container="secondGrid">
     <div grid:pagination></div>
@@ -77,6 +83,16 @@
         </tr>
       </tbody>
     </table>
+
+    <div>
+      <button ng:click="$grid.save()" ng:disabled="{{!$grid.canBeSaved()}}">Save</button>
+      <button ng:click="$grid.cancel()" ng:disabled="{{!$grid.dirty()}}">Cancel</button>
+    </div>
+
+    <pre>
+      $grid.canBeSaved() = {{$grid.canBeSaved()}}
+      $grid.dirty = {{$grid.dirty()}}
+    </pre>
   </div>
 
 </div>

@@ -1,12 +1,14 @@
-todos.Grid = function($log, $invalidWidgets, opts) {
+todos.Grid = function($log, opts) {
   this.$log = $log;
-  this.$invalidWidgets = $invalidWidgets;
 
   var self = this;
 
   this.controller = opts.controller;
   this.property = opts.property;
   this.resource = opts.resource;
+
+  // callbacks
+  this.beforeSave = opts.beforeSave || function() { return true; }
 
   this.masterData = [];
 
@@ -18,7 +20,7 @@ todos.Grid = function($log, $invalidWidgets, opts) {
   this.numPages = 0;
   this.totalCount = 0;
 }
-todos.Grid.$inject = ['$log', '$invalidWidgets'];
+todos.Grid.$inject = ['$log'];
 
 todos.Grid.prototype = {
   setOrderBy: function(name) {
@@ -76,20 +78,19 @@ todos.Grid.prototype = {
   },
 
   isValid: function() {
-    return this._invalidWidgets().length == 0;
+    return this._getInvalidWidgets().length == 0;
+  },
+
+  canBeSaved: function() {
+    return this.dirty() && this.isValid();
   },
 
   /**
    * Returns an array of invalid widgets for the current grid.
+   * Note: it should be overriden in the corresponding widget
    */
-  _invalidWidgets: function() {
-    var self = this;
-    var scopedInvalidWidgets = _(this.$invalidWidgets).select(function(invalidWidget) {
-      var grid = invalidWidget.parents('.grid-container').data('grid-instance');
-      return grid === self;
-    });
-
-    return scopedInvalidWidgets;
+  _getInvalidWidgets: function() {
+    return [];
   },
 
   load: function() {
