@@ -10,7 +10,6 @@ function TodosListController($resource, $window, grid) {
   this.$window = $window;
 
   this.estimates = [0, 1, 2, 3, 5, 8, 13, 21, 34];
-  this.pages = [5, 10, 20, 50];
 
   this.grid = grid({
     controller: this,

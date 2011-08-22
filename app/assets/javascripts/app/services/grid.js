@@ -6,13 +6,13 @@ todos.Grid = function($log, opts) {
   this.controller = opts.controller;
   this.property = opts.property;
   this.resource = opts.resource;
+  this.pages = opts.pages || [5, 10, 20, 50];
 
   // callbacks
   this.beforeSave = opts.beforeSave || function() { return true; }
 
   this.masterData = [];
 
-  this.wrapParams = opts.wrapParams;
   this.orderBy = opts.orderBy || 'created_at'
   this.orderDirection = opts.orderDirection || 'asc';
   this.perPage = opts.perPage || 10;
@@ -74,7 +74,15 @@ todos.Grid.prototype = {
   },
 
   isCellDirty: function(rowIndex, property) {
-    return this.masterData.records[rowIndex][property] !== this.controller[this.property].records[rowIndex][property];
+    return this.oldCellValue(rowIndex, property) !== this.controller[this.property].records[rowIndex][property];
+  },
+
+  oldCellValue: function(rowIndex, property) {
+    return this.masterData.records[rowIndex][property];
+  },
+
+  resetCell: function(rowIndex, property) {
+    this.controller[this.property].records[rowIndex][property] = this.oldCellValue(rowIndex, property);
   },
 
   isValid: function() {
@@ -107,6 +115,7 @@ todos.Grid.prototype = {
 
     this.loading = true;
     this.controller[this.property] = this.resource.get(params, function(data) {
+      // create the master copy
       self.masterData = angular.copy(data);
 
       self.totalCount = data.totalCount;

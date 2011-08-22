@@ -95,6 +95,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   compiler.directives(true);
   compiler.descend(true);
 
+  compiledElement.addClass('grid-editable-cell');
   var property = _.last(attribute.split('.'));
   compiledElement.attr('grid:mark-dirty',  property);
 
@@ -106,7 +107,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
   var spanElement = angular.element('<span />');
   compiledElement.append(spanElement);
 
-  return angular.extend(function($invalidWidgets, linkElement) {
+  return angular.extend(function($log, linkElement) {
     var currentScope = this;
 
     var inputElementContainer = linkElement.find('span:first');
@@ -114,6 +115,25 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     var inputElement = inputElementContainer.find('input,select');
     inputElement.addClass('grid-input');
     var spanElement = linkElement.find('span:last');
+
+    /**
+     * Check if the input element has validation errors.
+     */
+    var isValid = function() {
+      var scopedInvalidWidgets = currentScope.$grid._getInvalidWidgets();
+      var hasErrors = _(scopedInvalidWidgets).detect(function(invalidElement) {
+        return invalidElement.get(0) === inputElement.get(0);
+      });
+
+      return !hasErrors;
+    }
+
+    /**
+     * Check if the input element is visible.
+     */
+    var isVisible = function() {
+      return inputElementContainer.is(':visible');
+    }
 
     var showInput = function() {
       inputElementContainer.show();
@@ -123,16 +143,9 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     }
 
     var hideInput = function() {
-      if (inputElementContainer.is(':visible')) {
-        // check if the input element has validation errors
-        var hasErrors = _($invalidWidgets).detect(function(invalidElement) {
-          return invalidElement.get(0) === inputElement.get(0);
-        });
-
-        if (!hasErrors) {
-          inputElementContainer.hide();
-          spanElement.show();
-        }
+      if (isVisible() && isValid()) {
+        inputElementContainer.hide();
+        spanElement.show();
       }
     }
 
@@ -142,8 +155,16 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     });
 
     inputElementContainer.keyup(function(event) {
-      var escOrEnterPressed = event.keyCode === 27 || event.keyCode === 13;
-      if (escOrEnterPressed) {
+      var enterPressed = event.keyCode === 13;
+      if (enterPressed) {
+        hideInput();
+      }
+
+      var escPressed = event.keyCode == 27;
+      if (escPressed) {
+        currentScope.$grid.resetCell(currentScope.$index, property);
+        currentScope.$root.$eval();
+
         hideInput();
       }
     });
@@ -155,5 +176,5 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     currentScope.$watch(attribute, function(value) {
       spanElement.text(value);
     });
-  }, { $inject: ['$invalidWidgets'] });
+  }, { $inject: ['$log'] });
 });
