@@ -2,7 +2,7 @@ function TodosController($xhr, asyncValidatorCacheSweeper) {
   var scope = this;
 
   this.$xhr = $xhr;
-  this.asyncValidatorCacheSweeper = asyncValidatorCacheSweeper(scope);
+  this.asyncValidatorCacheSweeper = asyncValidatorCacheSweeper;
 
   this.estimates = [0, 1, 2, 3, 5, 8];
   this.todos = [];
@@ -20,7 +20,7 @@ TodosController.prototype = {
     var self = this;
 
     this.saveDisabled = true;
-    this.$xhr('POST', '/todos/validate.json', { name: value }, function(code, response) {
+    this.$xhr('POST', '/todos/validate.json', { id: null, name: value }, function(code, response) {
       var errors = response;
       validationDone(!!errors.name);
 
@@ -57,7 +57,7 @@ TodosController.prototype = {
           todo[field] = value;
         });
 
-        scope.asyncValidatorCacheSweeper.expireFor('todoName');
+        scope.asyncValidatorCacheSweeper.expireFor('todoName-' + todo.id);
         (callback || angular.noop)(response);
       }
     });

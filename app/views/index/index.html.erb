@@ -19,7 +19,7 @@
           </span>
 
           <span ng:show="editorEnabled">
-            <input type="text" size="30" name="todoName" ng:required />
+            <input type="text" size="30" name="todoName" ng:validate="asynchronous:validateName" my:async-validator-cache-sweeper="todoName-{{todo.id}}" />
             <select name="todoEstimate">
               <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
             </select>

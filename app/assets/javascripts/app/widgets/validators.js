@@ -1,25 +1,26 @@
 angular.directive('my:async-validator-cache-sweeper', function(key, element) {
-  var compiler = this;
-
-  return function(element) {
-    var scope = this;
-
-    if (!scope.$asyncValidatorCaches) {
-      scope.$asyncValidatorCaches = {};
-    }
-    scope.$asyncValidatorCaches[key] = {inputs: {}};
-
-    var cache = element.data('$asyncValidator');
-    element.data('$asyncValidator', scope.$asyncValidatorCaches[key]);
-  }
+  return angular.extend(function(asyncValidatorCacheSweeper, element) {
+    var cache = asyncValidatorCacheSweeper.addCache(key);
+    element.data('$asyncValidator', cache);
+  }, { $inject: ['asyncValidatorCacheSweeper'] });
 });
 
 angular.service('asyncValidatorCacheSweeper', function() {
-  return function(scope) {
-    return {
-      expireFor: function(key) {
-        scope.$asyncValidatorCaches[key].inputs = {};
+  var asyncValidatorCaches = {};
+
+  return {
+    addCache: function(key) {
+      asyncValidatorCaches[key] = {inputs: {}};
+      return asyncValidatorCaches[key];
+    },
+    expireFor: function(key) {
+      if (asyncValidatorCaches[key]) {
+        asyncValidatorCaches[key].inputs = {};
+        return true;
+      } else {
+        return false;
       }
-    };
+    }
   }
-})
+});
+
