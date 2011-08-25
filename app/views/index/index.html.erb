@@ -1,5 +1,5 @@
 <div ng:controller="TodosController">
-  <input type="text" name="todoName" size="30" placeholder="Enter your todo here" ng:required />
+  <input id="new-todo-name" type="text" name="todoName" size="30" placeholder="Enter your todo here" ng:validate="asynchronous:validateName" my:async-validator-cache-sweeper="todoName" />
   <label for="todo-estimate">estimation:</label>
   <select id="todo-estimate" name="todoEstimate">
     <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
@@ -24,7 +24,7 @@
               <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
             </select>
 
-            <button ng:click="save()">Ok</button>
+            <button ng:click="save()" ng:disabled="saveDisabled">Ok</button>
             <button ng:click="disableEditor()">Cancel</button>
           </span>
         </div>
@@ -52,11 +52,5 @@
     <div>Incomplete: {{todos.$filter({done: false}).length}}</div>
     <div>Done: {{todos.$filter({done: true}).length}}</div>
   </div>
-
-  <hr />
-  Debug view:
-  <pre>
-      todos = {{todos}}
-  </pre>
 </div>
 

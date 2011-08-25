@@ -41,6 +41,17 @@ class TodosController < ApplicationController
     render :json => { :records => updated_records }
   end
 
+  def validate
+    errors = {}
+    todo = Todo.find_by_name(params[:name])
+
+    if todo.present?
+      errors[:name] = 'Todo exists!'
+    end
+
+    render :json => errors
+  end
+
   # GET /todos/1
   # GET /todos/1.json
   def show
