@@ -28,11 +28,28 @@ angular.widget('@grid:pagination', function(attribute, element) {
   compiler.descend(true);
   compiler.directives(true);
 
-  var ngInclude = angular.element('<ng:include />').attr('src', "'/assets/app/templates/grid_pagination.html'")
+  var ngInclude = angular.element('<ng:include />').attr('src', "'/assets/app/templates/grid_pagination.html'").attr('onLoad', '_bindPagination()');
   element.append(ngInclude);
 
   return function(element) {
     var scope = this;
+
+    scope._bindPagination = function() {
+      element.find('a.grid-prev-page').bind('click', function(event) {
+        scope.$tryEval('$grid.prevPage()', this);
+        event.preventDefault();
+      });
+
+      element.find('a.grid-next-page').bind('click', function(event) {
+        scope.$tryEval('$grid.nextPage()', this);
+        event.preventDefault();
+      });
+
+      element.find('button.grid-reload').bind('click', function(event) {
+        scope.$tryEval('$grid.load()', this);
+        event.preventDefault();
+      });
+    }
 
     scope.$watch('$grid.perPage', function() {
       scope.$grid.currentPage = 1;
@@ -136,6 +153,8 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
     }
 
     var showInput = function() {
+      if (isVisible()) return false;
+
       inputElementContainer.show();
       // focus on the input element
       inputElement.focus();
@@ -162,6 +181,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
 
       var escPressed = event.keyCode == 27;
       if (escPressed) {
+        // restore old cell value
         currentScope.$grid.resetCell(currentScope.$index, property);
         currentScope.$root.$eval();
 
@@ -169,7 +189,7 @@ angular.widget('@grid:editable-cell', function(attribute, compiledElement) {
       }
     });
 
-    $('body').click(function() {
+    $('body').bind('click dbclick', function() {
       hideInput();
     });
 

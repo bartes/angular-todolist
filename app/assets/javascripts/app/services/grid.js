@@ -114,7 +114,7 @@ todos.Grid.prototype = {
     this.$log.info('[grid] loading data, params=', params);
 
     this.loading = true;
-    this.controller[this.property] = this.resource.get(params, function(data) {
+    this.controller[this.property] = this.resource.paginate(params, function(data) {
       // create the master copy
       self.masterData = angular.copy(data);
 
