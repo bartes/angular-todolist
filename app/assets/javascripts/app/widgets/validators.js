@@ -1,25 +1,22 @@
-angular.directive('my:async-validator-cache-sweeper', function(key, element) {
-  return angular.extend(function(asyncValidatorCacheSweeper, element) {
-    var cache = asyncValidatorCacheSweeper.addCache(key);
-    element.data('$asyncValidator', cache);
-  }, { $inject: ['asyncValidatorCacheSweeper'] });
+angular.directive('my:async-validator', function(expression, element) {
+  var compiler = this;
+  compiler.descend(true);
+
+  element.attr('ng:validate', 'asynchronous:' + expression);
+  element.addClass('async-validator-cache-sweepable');
+
+  return angular.noop;
 });
 
 angular.service('asyncValidatorCacheSweeper', function() {
   var asyncValidatorCaches = {};
 
   return {
-    addCache: function(key) {
-      asyncValidatorCaches[key] = {inputs: {}};
-      return asyncValidatorCaches[key];
-    },
-    expireFor: function(key) {
-      if (asyncValidatorCaches[key]) {
-        asyncValidatorCaches[key].inputs = {};
-        return true;
-      } else {
-        return false;
-      }
+    expireAll: function() {
+      $('.async-validator-cache-sweepable').each(function(indx, input) {
+        var input = $(input);
+        input.data('$asyncValidator').inputs = {};
+      });
     }
   }
 });

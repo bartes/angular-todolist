@@ -1,10 +1,10 @@
 <span ng:hide="$grid.hasPrevPage()">Prev page</span>
-<a class="prev-page" ng:show="$grid.hasPrevPage()">Prev page</a>
+<a class="grid-prev-page" ng:show="$grid.hasPrevPage()">Prev page</a>
 
 | <span>Page {{$grid.currentPage}} of {{$grid.numPages}}</span>
 
 | <span ng:hide="$grid.hasNextPage()">Next page</span>
-<a class="next-page" ng:show="$grid.hasNextPage()">Next page</a>
+<a class="grid-next-page" ng:show="$grid.hasNextPage()">Next page</a>
 
 | <label for="per-page-{{$grid.id}}">Per page</label>
 <select id="per-page-{{$grid.id}}" name="$grid.perPage" ng:options="perPage for perPage in $grid.pages"></select>

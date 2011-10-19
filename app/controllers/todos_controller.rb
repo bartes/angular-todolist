@@ -42,10 +42,18 @@ class TodosController < ApplicationController
   end
 
   def validate
-    errors = {}
-    todo = Todo.find_by_name(params[:name])
+    id = params[:id]
+    value = params[:value]
 
-    if todo.present?
+    todos = []
+    if id.present?
+      todos = Todo.where('id != ? AND name = ?', id, value)
+    else
+      todos = Todo.where('name = ?', value)
+    end
+
+    errors = {}
+    if not todos.empty?
       errors[:name] = 'Todo exists!'
     end
 

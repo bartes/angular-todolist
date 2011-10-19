@@ -8,9 +8,11 @@ Angular::Application.routes.draw do
   end
 
   match '/sandbox/watch' => 'sandbox#watch'
+  match '/sandbox/forms' => 'sandbox#forms'
 
   match '/sandbox/tabs' => 'sandbox#tabs'
   match '/sandbox/tree' => 'sandbox#tree'
+  match '/sandbox/validations' => 'sandbox#validations'
 
   root :to => 'index#index'
 end

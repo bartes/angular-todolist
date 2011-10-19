@@ -10,6 +10,8 @@ todos.Grid = function($log, opts) {
 
   // callbacks
   this.beforeSave = opts.beforeSave || function() { return true; }
+  this.afterLoad = opts.afterLoad || angular.noop;
+  this.afterSave = opts.afterSave || angular.noop;
 
   this.masterData = [];
 
@@ -115,6 +117,8 @@ todos.Grid.prototype = {
 
     this.loading = true;
     this.controller[this.property] = this.resource.paginate(params, function(data) {
+      self._bindResources(data);
+
       // create the master copy
       self.masterData = angular.copy(data);
 
@@ -122,6 +126,7 @@ todos.Grid.prototype = {
       self.numPages = data.numPages;
 
       self.loading = false;
+      self.afterLoad(data);
     });
   },
 
@@ -132,16 +137,30 @@ todos.Grid.prototype = {
 
     this.loading = true;
     this.controller[this.property].$save(function(data) {
+      self._bindResources(data);
+
       self.controller[self.property].records = data.records;
       self.masterData = angular.copy(data);
 
       self.loading = false;
+      self.afterSave(data);
     });
   },
 
   cancel: function() {
     if (!this.dirty()) { return false; }
     this.controller[this.property] = angular.copy(this.masterData);
+  },
+
+  /**
+   * Binds raw array to the resource objects collection.
+   */
+  _bindResources: function(data) {
+    var self = this;
+
+    _.each(data.records, function(record, index) {
+      data.records[index] = new self.resource(record);
+    });
   }
 }
 

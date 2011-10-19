@@ -1,10 +1,13 @@
 <div ng:controller="TodosController">
-  <input id="new-todo-name" type="text" name="todoName" size="30" placeholder="Enter your todo here" ng:validate="asynchronous:validateName" my:async-validator-cache-sweeper="todoName" />
+  <input type="text" name="newTodoName" size="30" placeholder="Enter your todo here" my:async-validator />
+
   <label for="todo-estimate">estimation:</label>
-  <select id="todo-estimate" name="todoEstimate">
-    <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
-  </select>
-  <button ng:click="addTodo(todoName, todoEstimate)">Add</button>
+  <select id="todo-estimate" name="newTodoEstimate" ng:options="e for e in estimates"></select>
+  <button ng:click="addTodo()">Add</button>
+
+  <div>
+    <input type="text" name="todos[1].name" data-record-id="{{todos[1].id}}" my:async-validator />
+  </div>
 
   <div class="tasks" ng:show="todos.$filter({done: false}).length > 0">
     <b>Tasks to do:</b>
@@ -19,12 +22,12 @@
           </span>
 
           <span ng:show="editorEnabled">
-            <input type="text" size="30" name="todoName" ng:validate="asynchronous:validateName" my:async-validator-cache-sweeper="todoName-{{todo.id}}" />
+            <input type="text" size="30" name="todoName" ng:validate="asynchronous:todo.validateName"  />
             <select name="todoEstimate">
               <option ng:repeat="estimate in estimates" value="{{estimate}}">{{estimate}}</option>
             </select>
 
-            <button ng:click="save()" ng:disabled="saveDisabled">Ok</button>
+            <button ng:click="save()">Ok</button>
             <button ng:click="disableEditor()">Cancel</button>
           </span>
         </div>
