@@ -1,1 +1,9 @@
 <h2>Hello Agular forms</h2>
+
+<form action="#" name="myForm" ng:controller="FormController">
+  <select ng:options="c for c in categories" ng:model="myFormData.category">
+    <option value="">-- select category --</option>
+  </select>
+
+</form>
+
