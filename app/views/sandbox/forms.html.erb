@@ -14,8 +14,9 @@
   </div>
 
   <div>
-    <input type="password" name="password" ng:model="myFormData.password" required ensure-length="{min: 3, max: 7}" />
-    <span ng:show="myForm.password.$error.LENGTH">Invalid length</span>
+    <input type="password" name="password" ng:model="myFormData.password" required ensure-length="passwordLength" />
+    <span ng:show="myForm.password.$error.TOO_SHORT">Password is too short (min: {{passwordLength.min}} characters)</span>
+    <span ng:show="myForm.password.$error.TOO_LONG">Password is too long (max: {{passwordLength.max}} characters)</span>
   </div>
 
   <button ng:click="save()" ng:disabled="{{!dirty() || !valid()}}">Save</button>
@@ -26,5 +27,5 @@
     dirty() = {{dirty()}}
     valid() = {{valid()}}
   </pre>
-</:form>
+</form>
 

@@ -1,5 +1,6 @@
 FormController = function() {
   this.categories = ['foo', 'bar', 'baz'];
+  this.passwordLength = {min: 3, max: 6};
 
   this.record = {
     category: 'foo',
@@ -10,6 +11,7 @@ FormController = function() {
 
   this.OddNumber = function(element) {
     var widget = this;
+
     this.$on('$validate', function() {
       var isOdd = widget.$viewValue % 2 !== 0;
       if (isOdd) {
@@ -45,9 +47,8 @@ FormController.prototype = {
 };
 
 angular.directive('ensure-length', function(expression, element) {
-  var options = angular.fromJson(expression);
-
   return angular.extend(function($formFactory, element) {
+    var options = this.$eval(expression);
     var form = $formFactory.forElement(element);
 
     var alias = element.attr('name');
@@ -55,32 +56,17 @@ angular.directive('ensure-length', function(expression, element) {
 
     form.$on('$validate', function() {
       var value = element.val();
+
       if (value.length < options.min) {
-        widget.$emit('$invalid', 'LENGTH');
+        widget.$emit('$invalid', 'TOO_SHORT');
       } else if (value.length > options.max) {
-        widget.$emit('$invalid', 'LENGTH');
+        widget.$emit('$invalid', 'TOO_LONG');
       } else {
-        widget.$emit('$valid', 'LENGTH');
+        widget.$emit('$valid', 'TOO_SHORT');
+        widget.$emit('$valid', 'TOO_LONG');
       }
     });
 
   }, {$inject: ['$formFactory']});
 });
-
-//angular.widget('my:form', function(element) {
-  //var linkFn = function($formFactory, element) {
-    //var form = $formFactory.forElement(element);
-
-    //form.$createWidget({
-      //scope: this
-    //});
-
-    //form.$on('$validate', function() {
-      //console.log('validate');
-    //});
-  //};
-  //linkFn.$inject = ['$formFactory'];
-
-  //return linkFn;
-//});
 
