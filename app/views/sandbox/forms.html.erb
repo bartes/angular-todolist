@@ -1,9 +1,30 @@
 <h2>Hello Agular forms</h2>
 
 <form action="#" name="myForm" ng:controller="FormController">
-  <select ng:options="c for c in categories" ng:model="myFormData.category">
-    <option value="">-- select category --</option>
-  </select>
+  <div ng:show="invalid()">This form contains errors!</div>
 
-</form>
+  <div>
+    <select ng:options="c for c in categories" ng:model="myFormData.category" required>
+      <option value="">-- select category --</option>
+    </select>
+  </div>
+
+  <div>
+    <input type="@OddNumber" name="oddNumber" ng:model="myFormData.oddNumber" required>
+  </div>
+
+  <div>
+    <input type="password" name="password" ng:model="myFormData.password" required ensure-length="{min: 3, max: 7}" />
+    <span ng:show="myForm.password.$error.LENGTH">Invalid length</span>
+  </div>
+
+  <button ng:click="save()" ng:disabled="{{!dirty() || !valid()}}">Save</button>
+  <button ng:click="cancel()" ng:disabled="{{!dirty()}}">Cancel</button>
+
+  <pre>
+    myForm = {{myForm}}
+    dirty() = {{dirty()}}
+    valid() = {{valid()}}
+  </pre>
+</:form>
 
